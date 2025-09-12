@@ -1,0 +1,5 @@
+azure-ai-documentintelligence
+python-dotenv
+flask
+flask-cors
+requests
