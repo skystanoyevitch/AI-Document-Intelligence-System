@@ -45,7 +45,7 @@ def analyze_receipt():
         # Analyze document using prebuilt receipt model
         poller = document_client.begin_analyze_document(
             "prebuilt-receipt",
-            analyze_request=file_content,
+            body=file_content,
             content_type="application/octet-stream"
         )
         
@@ -67,6 +67,9 @@ def analyze_receipt():
 def extract_receipt_fields(result):
     """Extract structured data from receipt analysis result"""
     receipts = []
+
+    if not result.documents:
+        return receipts
     
     for document in result.documents:
         receipt = {}
@@ -76,48 +79,50 @@ def extract_receipt_fields(result):
         
         # Merchant information
         if "MerchantName" in fields:
-            receipt["merchant_name"] = fields["MerchantName"].value
+            receipt["merchant_name"] = fields["MerchantName"].content
             receipt["merchant_confidence"] = fields["MerchantName"].confidence
         
         if "MerchantAddress" in fields:
-            receipt["merchant_address"] = fields["MerchantAddress"].value
+            receipt["merchant_address"] = fields["MerchantAddress"].content
         
         if "MerchantPhoneNumber" in fields:
-            receipt["merchant_phone"] = fields["MerchantPhoneNumber"].value
+            receipt["merchant_phone"] = fields["MerchantPhoneNumber"].content
         
         # Transaction details
         if "TransactionDate" in fields:
-            receipt["transaction_date"] = str(fields["TransactionDate"].value)
+            receipt["transaction_date"] = str(fields["TransactionDate"].content)
         
         if "TransactionTime" in fields:
-            receipt["transaction_time"] = str(fields["TransactionTime"].value)
+            receipt["transaction_time"] = str(fields["TransactionTime"].content)
         
         # Financial information
         if "Total" in fields:
-            receipt["total"] = fields["Total"].value
+            receipt["total"] = fields["Total"].content
             receipt["total_confidence"] = fields["Total"].confidence
         
         if "Subtotal" in fields:
-            receipt["subtotal"] = fields["Subtotal"].value
+            receipt["subtotal"] = fields["Subtotal"].content
         
         if "TotalTax" in fields:
-            receipt["tax"] = fields["TotalTax"].value
+            receipt["tax"] = fields["TotalTax"].content
         
         # Items
-        if "Items" in fields:
+        if "Items" in fields and fields["Items"] is not None and fields["Items"].content is not None:
             receipt["items"] = []
-            for item in fields["Items"].value:
+            for item in fields["Items"].content:
                 item_data = {}
-                item_fields = item.value
+
+                if item and item.content:
+                    item_fields = item.content
                 
-                if "Description" in item_fields:
-                    item_data["description"] = item_fields["Description"].value
-                if "Quantity" in item_fields:
-                    item_data["quantity"] = item_fields["Quantity"].value
-                if "Price" in item_fields:
-                    item_data["price"] = item_fields["Price"].value
-                if "TotalPrice" in item_fields:
-                    item_data["total_price"] = item_fields["TotalPrice"].value
+                if "Description" in item_fields and item_fields["Description"] is not None:
+                    item_data["description"] = item_fields["Description"].content
+                if "Quantity" in item_fields and item_fields["Quantity"] is not None:
+                    item_data["quantity"] = item_fields["Quantity"].content
+                if "Price" in item_fields and item_fields["Price"] is not None:
+                    item_data["price"] = item_fields["Price"].content
+                if "TotalPrice" in item_fields and item_fields["TotalPrice"] is not None:
+                    item_data["total_price"] = item_fields["TotalPrice"].content
                 
                 receipt["items"].append(item_data)
         
