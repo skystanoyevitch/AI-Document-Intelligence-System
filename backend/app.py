@@ -147,4 +147,6 @@ def format_raw_result(result):
     }
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # For Azure App Service, use the port provided by the environment
+    port = int(os.getenv('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
