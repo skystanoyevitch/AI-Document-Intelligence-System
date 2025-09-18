@@ -11,7 +11,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
+# build/ - Commented out so React build files are deployed
 develop-eggs/
 dist/
 downloads/
