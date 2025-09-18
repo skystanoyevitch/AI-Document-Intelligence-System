@@ -1,2 +1,2 @@
-# AI Receipt Analysis System
+# AI Receipt Analyzer
 Built with Azure , this is an AI-Powered Document Intelligence System that scans receipts and output structure data in correct format.
