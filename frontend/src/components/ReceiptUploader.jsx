@@ -4,9 +4,10 @@ import axios from "axios";
 import "./ReceiptUploader.css";
 
 // Dynamic API base URL - works in both development and production
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '' // Use relative path in production (same domain as frontend)
-  : 'http://127.0.0.1:5000'; // Use localhost in development
+// In production (built app), use relative path; in development, use localhost
+const API_BASE_URL = import.meta.env.PROD
+  ? "" // Use relative path in production (same domain as frontend)
+  : "http://127.0.0.1:5000"; // Use localhost in development
 
 const ReceiptUploader = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);

@@ -10,10 +10,10 @@ After deploying your app to Azure App Service, you need to configure the environ
 2. Go to **Settings** > **Environment variables**
 3. Add the following Application Settings:
 
-   | Name | Value |
-   |------|-------|
+   | Name                                   | Value                                         |
+   | -------------------------------------- | --------------------------------------------- |
    | `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | `https://eastus.api.cognitive.microsoft.com/` |
-   | `AZURE_DOCUMENT_INTELLIGENCE_KEY` | `your_actual_key_here` |
+   | `AZURE_DOCUMENT_INTELLIGENCE_KEY`      | `your_actual_key_here`                        |
 
 4. Click **Apply** to save the settings
 5. Restart your App Service
@@ -60,6 +60,7 @@ For production environments, store your secrets in Azure Key Vault:
 5. Verify receipt analysis results are displayed
 
 If you still see a blank page:
+
 1. Check browser console for JavaScript errors
 2. Check Azure App Service logs
 3. Verify environment variables are set correctly
