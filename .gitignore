@@ -134,6 +134,13 @@ Desktop.ini
 *.swp
 *.swo
 
+# Azure deployment logs and artifacts
+LogFiles/
+deployments/
+*.zip
+backend/build/
+frontend/build/
+
 # Azure specific
 .azure/
 
