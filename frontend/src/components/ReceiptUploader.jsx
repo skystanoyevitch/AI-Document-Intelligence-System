@@ -3,6 +3,11 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import "./ReceiptUploader.css";
 
+// Dynamic API base URL - works in both development and production
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '' // Use relative path in production (same domain as frontend)
+  : 'http://127.0.0.1:5000'; // Use localhost in development
+
 const ReceiptUploader = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState(null);
@@ -18,7 +23,7 @@ const ReceiptUploader = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/analyze-receipt",
+        `${API_BASE_URL}/analyze-receipt`,
         formData,
         {
           headers: {
